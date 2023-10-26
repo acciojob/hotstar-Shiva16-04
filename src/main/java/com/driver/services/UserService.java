@@ -28,7 +28,7 @@ public class UserService {
         //Jut simply add the user to the Db and return the userId returned by the repository
         Optional<User>userOptional=userRepository.findById(user.getId());
         User user1=null;
-        if(userOptional.isPresent()) {
+        if(!userOptional.isPresent()) {
             user1=userRepository.save(user);
             return user1.getId();
         }
@@ -47,7 +47,7 @@ public class UserService {
             SubscriptionType subscriptionType=user.getSubscription().getSubscriptionType();
             List<WebSeries>webSeriesList=webSeriesRepository.findAll();
             for(WebSeries webSeries:webSeriesList){
-                if(age>=webSeries.getAgeLimit() && subscriptionType==webSeries.getSubscriptionType())cnt++;
+                if(age<=webSeries.getAgeLimit() && subscriptionType==webSeries.getSubscriptionType())cnt++;
             }
             return cnt;
         }

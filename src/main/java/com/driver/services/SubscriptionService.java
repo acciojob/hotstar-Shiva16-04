@@ -57,11 +57,13 @@ public class SubscriptionService {
                 throw new Exception("Already the best Subscription");
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.PRO){
                 int currCost=user.getSubscription().getTotalAmountPaid();
-                int updCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.ELITE, 350));
+                int updCost=800+(250*(user.getSubscription().getNoOfScreensSubscribed()));
+                user.getSubscription().setSubscriptionType(SubscriptionType.PRO);
+                user.getSubscription().setTotalAmountPaid(updCost);
                 return updCost-currCost;
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.BASIC){
                 int currCost=user.getSubscription().getTotalAmountPaid();
-                int UpdCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.PRO, 250));
+                int UpdCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.PRO, user.getSubscription().getNoOfScreensSubscribed()));
                 return UpdCost-currCost;
             }
         }
