@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class WebSeriesTransformer {
 
-    public static WebSeries WebSeriesEntryDtoToWebSeries(WebSeriesEntryDto webSeriesEntryDto, ProductionHouse productionHouse){
+    public static WebSeries WebSeriesEntryDtoToWebSeries(WebSeriesEntryDto webSeriesEntryDto){
         WebSeries webSeries=new WebSeries();
         webSeries.setSeriesName(webSeriesEntryDto.getSeriesName());
         webSeries.setAgeLimit(webSeriesEntryDto.getAgeLimit());
         webSeries.setRating(webSeriesEntryDto.getRating());
         webSeries.setSubscriptionType(webSeriesEntryDto.getSubscriptionType());
-        webSeries.setProductionHouse(productionHouse);
         return webSeries;
     }
 }

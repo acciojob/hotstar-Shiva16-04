@@ -33,12 +33,13 @@ public class WebSeriesService {
         Optional<ProductionHouse>productionHouseOptional=productionHouseRepository.findById(webSeriesEntryDto.getProductionHouseId());
         if(productionHouseOptional.isPresent()){
             ProductionHouse productionHouse=productionHouseOptional.get();
-            double sum=productionHouse.getRatings() * productionHouse.getWebSeriesList().size()+webSeriesEntryDto.getRating();
+            double sum=(productionHouse.getRatings() * productionHouse.getWebSeriesList().size())+webSeriesEntryDto.getRating();
             int size=productionHouse.getWebSeriesList().size()+1;
             double rating =sum/size;
             productionHouse.setRatings(rating);
-            WebSeries webSeries=WebSeriesTransformer.WebSeriesEntryDtoToWebSeries(webSeriesEntryDto,productionHouse);
+            WebSeries webSeries=WebSeriesTransformer.WebSeriesEntryDtoToWebSeries(webSeriesEntryDto);
             productionHouse.getWebSeriesList().add(webSeries);
+            webSeries.setProductionHouse(productionHouse);
             webSeriesRepository.save(webSeries);
             return webSeries.getId();
         }else{
