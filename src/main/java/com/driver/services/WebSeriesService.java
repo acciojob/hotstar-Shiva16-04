@@ -40,8 +40,8 @@ public class WebSeriesService {
             WebSeries webSeries=WebSeriesTransformer.WebSeriesEntryDtoToWebSeries(webSeriesEntryDto);
             productionHouse.getWebSeriesList().add(webSeries);
             webSeries.setProductionHouse(productionHouse);
-            webSeriesRepository.save(webSeries);
-            return webSeries.getId();
+            WebSeries webSeries1=webSeriesRepository.save(webSeries);
+            return webSeries1.getId();
         }else{
             return null;
         }

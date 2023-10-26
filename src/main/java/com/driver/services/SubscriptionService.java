@@ -32,11 +32,11 @@ public class SubscriptionService {
             User user =userOptional.get();
             Subscription subscription= SubscriptionTransformer.subscriptionTransformerToSubscription(subscriptionEntryDto,user);
             if(subscriptionEntryDto.getSubscriptionType()== SubscriptionType.BASIC){
-                subscription.setTotalAmountPaid(500);
+                subscription.setTotalAmountPaid(500+(200*subscription.getNoOfScreensSubscribed()));
             }else if(subscriptionEntryDto.getSubscriptionType()==SubscriptionType.PRO){
-                subscription.setTotalAmountPaid(800);
+                subscription.setTotalAmountPaid(800+(250* subscription.getNoOfScreensSubscribed()));
             }else if(subscriptionEntryDto.getSubscriptionType()==SubscriptionType.ELITE){
-                subscription.setTotalAmountPaid(1000);
+                subscription.setTotalAmountPaid(1000+(350*subscription.getNoOfScreensSubscribed()));
             }
             user.setSubscription(subscription);
             subscriptionRepository.save(subscription);
@@ -56,11 +56,13 @@ public class SubscriptionService {
             if(user.getSubscription().getSubscriptionType()==SubscriptionType.ELITE){
                 throw new Exception("Already the best Subscription");
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.PRO){
-                int cost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.ELITE, 350));
-                return cost-800;
+                int currCost=user.getSubscription().getTotalAmountPaid();
+                int updCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.ELITE, 350));
+                return updCost-currCost;
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.BASIC){
-                int cost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.PRO, 250));
-                return cost-500;
+                int currCost=user.getSubscription().getTotalAmountPaid();
+                int UpdCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.PRO, 250));
+                return UpdCost-currCost;
             }
         }
 
