@@ -59,8 +59,9 @@ public class SubscriptionService {
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.PRO){
                 int currCost=user.getSubscription().getTotalAmountPaid();
                 int updCost=1000+(350*(user.getSubscription().getNoOfScreensSubscribed()));
-                user.getSubscription().setSubscriptionType(SubscriptionType.PRO);
+                user.getSubscription().setSubscriptionType(SubscriptionType.ELITE);
                 user.getSubscription().setTotalAmountPaid(updCost);
+
                 return updCost-currCost;
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.BASIC){
                 int currCost=user.getSubscription().getTotalAmountPaid();
