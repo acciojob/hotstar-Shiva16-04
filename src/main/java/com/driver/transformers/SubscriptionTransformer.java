@@ -6,11 +6,10 @@ import com.driver.model.SubscriptionType;
 import com.driver.model.User;
 
 public class SubscriptionTransformer {
-    public static Subscription subscriptionTransformerToSubscription(SubscriptionEntryDto subscriptionEntryDto, User user){
+    public static Subscription subscriptionTransformerToSubscription(SubscriptionEntryDto subscriptionEntryDto){
         Subscription subscription=new Subscription();
         subscription.setSubscriptionType(subscriptionEntryDto.getSubscriptionType());
         subscription.setNoOfScreensSubscribed(subscriptionEntryDto.getNoOfScreensRequired());
-        subscription.setUser(user);
         return subscription;
     }
 }

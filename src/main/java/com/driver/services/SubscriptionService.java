@@ -30,7 +30,7 @@ public class SubscriptionService {
         Optional<User>userOptional=userRepository.findById(subscriptionEntryDto.getUserId());
         if(userOptional.isPresent()){
             User user =userOptional.get();
-            Subscription subscription= SubscriptionTransformer.subscriptionTransformerToSubscription(subscriptionEntryDto,user);
+            Subscription subscription= SubscriptionTransformer.subscriptionTransformerToSubscription(subscriptionEntryDto);
             if(subscriptionEntryDto.getSubscriptionType()== SubscriptionType.BASIC){
                 subscription.setTotalAmountPaid(500+(200*subscription.getNoOfScreensSubscribed()));
             }else if(subscriptionEntryDto.getSubscriptionType()==SubscriptionType.PRO){
@@ -38,6 +38,7 @@ public class SubscriptionService {
             }else if(subscriptionEntryDto.getSubscriptionType()==SubscriptionType.ELITE){
                 subscription.setTotalAmountPaid(1000+(350*subscription.getNoOfScreensSubscribed()));
             }
+            subscription.setUser(user);
             user.setSubscription(subscription);
             subscriptionRepository.save(subscription);
             return subscription.getTotalAmountPaid();
@@ -57,15 +58,18 @@ public class SubscriptionService {
                 throw new Exception("Already the best Subscription");
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.PRO){
                 int currCost=user.getSubscription().getTotalAmountPaid();
-                int updCost=800+(250*(user.getSubscription().getNoOfScreensSubscribed()));
+                int updCost=1000+(350*(user.getSubscription().getNoOfScreensSubscribed()));
                 user.getSubscription().setSubscriptionType(SubscriptionType.PRO);
                 user.getSubscription().setTotalAmountPaid(updCost);
                 return updCost-currCost;
             }else if(user.getSubscription().getSubscriptionType()==SubscriptionType.BASIC){
                 int currCost=user.getSubscription().getTotalAmountPaid();
-                int UpdCost=buySubscription(new SubscriptionEntryDto(user.getId(),SubscriptionType.PRO, user.getSubscription().getNoOfScreensSubscribed()));
+                int UpdCost=800+(250*(user.getSubscription().getNoOfScreensSubscribed()));
+                user.getSubscription().setSubscriptionType(SubscriptionType.PRO);
+                user.getSubscription().setTotalAmountPaid(UpdCost);
                 return UpdCost-currCost;
             }
+            userRepository.save(user);
         }
 
         return null;
